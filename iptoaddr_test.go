@@ -1,6 +1,7 @@
 package ip2addr
 
 import (
+	"fmt"
 	"strconv"
 	"testing"
 )
@@ -13,4 +14,12 @@ func TestGet(t *testing.T) {
 		resp, _ := IpToAddr("1.41.102.1")
 		t.Log(resp + "------------------" + strconv.Itoa(i))
 	}
+}
+
+/**
+  查询自己的外网IP
+*/
+func TestGetExternalIP(t *testing.T) {
+	r, i := GetExternalIP()
+	fmt.Println(r, i)
 }

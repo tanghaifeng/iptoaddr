@@ -1,7 +1,6 @@
 package ip2addr
 
 import (
-	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"net/http"
 )
@@ -11,7 +10,6 @@ func IpToAddr(ip string) (string, error) {
 	resp, err := http.Get("http://ip.tool.chinaz.com/" + ip)
 	defer resp.Body.Close()
 	if err != nil {
-		fmt.Println("查询出现错误")
 		return "", err
 	}
 	if doc, err := goquery.NewDocumentFromReader(resp.Body); err == nil {
@@ -19,4 +17,20 @@ func IpToAddr(ip string) (string, error) {
 		return addr.Text(), err
 	}
 	return "", err
+}
+
+//  查询自己的外网IP
+func GetExternalIP() (string, string) {
+	addr := ""
+	ip := ""
+	resp, err := http.Get("http://ip.tool.chinaz.com/")
+	defer resp.Body.Close()
+	if err != nil {
+		return addr, ip
+	}
+	if doc, err := goquery.NewDocumentFromReader(resp.Body); err == nil {
+		addr = doc.Find(".Whwtdhalf em").Text()
+		ip = doc.Find(".fz24").Text()
+	}
+	return addr, ip
 }
